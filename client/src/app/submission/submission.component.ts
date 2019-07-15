@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UploadService } from  '../upload.service';
-import { AssignmentsService } from  '../assignments.service';
+import { AssignmentsService, UploadService } from  '@/services';
 
 @Component({
   selector: 'app-submission',

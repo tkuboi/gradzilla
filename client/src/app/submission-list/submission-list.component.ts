@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SubmissionResultService } from '../submission-result.service'
+import { SubmissionResultService } from '@/services'
 
 @Component({
   selector: 'app-submission-list',
