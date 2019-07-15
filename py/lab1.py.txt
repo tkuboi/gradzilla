@@ -1,0 +1,13 @@
+"""A test submission
+
+Gradzilla
+"""
+def func1(x):
+    """
+    Args:
+        x (int): int
+    Returns:
+        bool
+    """
+    return x == 1
+

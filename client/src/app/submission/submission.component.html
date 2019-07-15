@@ -1,0 +1,35 @@
+<h1>Assignment</h1>
+<div *ngIf="assignment">
+    <h3>{{ assignment.course }} {{ assignment.name }}</h3>
+
+</div>
+<h3>Submit your work!</h3>
+<div>
+  <div *ngIf="error">
+    {{ error.message }}
+  </div>
+  <div *ngIf="uploadResponse.status === 'success'">
+    Successfully uploaded to {{ uploadResponse.filePath }} !
+  </div>
+  <div *ngIf="uploadResponse.status === 'progress'">
+
+
+    <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+      {{uploadResponse.message}}%
+    </div>
+
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <label>File</label>
+    <input type="file" name="submission" (change)="onFileChange($event)" />
+    <button type="submit">Upload</button>
+
+  </form>
+  <div *ngIf="uploadResponse.message !== ''">
+      <div [innerHtml]="uploadResponse.message"></div>
+  </div>
+
+  <app-submission-list [user]="userId" [assignmentId]="assignment.id"></app-submission-list>
+</div>

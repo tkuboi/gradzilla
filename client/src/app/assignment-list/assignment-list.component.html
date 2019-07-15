@@ -1,0 +1,9 @@
+<h2>Assigment List</h2>
+
+<div *ngFor="let assignment of assignments; index as assignmentId">
+  <h3>
+    <a [title]="assignment.name + ' details'" [routerLink]="['/submission', assignmentId]" [state]="assignment">
+      {{assignment.name}}
+    </a>
+  </h3>
+</div>

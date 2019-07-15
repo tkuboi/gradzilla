@@ -1,0 +1,8 @@
+<div *ngFor="let sub of submissions;">
+    <ul>
+        <li>{{ sub.submissionTime }}</li>
+        <li>{{ sub.status }}</li>
+        <li>{{ sub.score }}</li>
+        <li><p [innerHtml]="sub.result"></p></li>
+    </ul>
+</div>

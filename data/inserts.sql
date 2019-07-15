@@ -1,0 +1,14 @@
+INSERT INTO Course (name, shortDescription, description) VALUES ('CPE202', 'Data Structures', 'Data Structures');
+INSERT INTO User (name, email, first, last, password) VALUES ('tkuboi', 'tkuboi@calpoly.edu', 'Toshi', 'Kuboi', SHA1('pass'));
+INSERT INTO Enrollment (user, course, year, quarter) VALUES ('tkuboi', 'CPE202', 2019, 'Fall');
+INSERT INTO AssignmentType (name) VALUES ('Lab');
+INSERT INTO AssignmentType (name) VALUES ('Project');
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Lab 1', 1);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Lab 2', 1);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Lab 3', 1);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Lab 4', 1);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Lab 5', 1);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Project 1', 2);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Project 2', 2);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Project 3', 2);
+INSERT INTO Assignment (course, name, type) VALUES ('CPE202', 'Project 4', 2);
