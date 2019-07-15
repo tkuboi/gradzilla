@@ -1,4 +1,4 @@
-package net.tkuboi.gradzilla.configuration;
+package net.tkuboi.gradzilla.auth;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
