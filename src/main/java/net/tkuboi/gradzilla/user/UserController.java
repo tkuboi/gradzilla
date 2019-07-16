@@ -18,12 +18,6 @@ public class UserController {
     this.userRepository = userRepository;
   }
 
-  @PostMapping(value = "/authenticate")
-  public Boolean authenticate(@RequestParam("name") String name, @RequestParam("password") String password) {
-    User user = this.userRepository.findByNameAndPassword(name, password);
-    return (user != null);
-  }
-
   @PostMapping(value = "/user/register")
   public Boolean register(@RequestParam("user") User user) {
     if (!user.getEmail().endsWith("@calpoly.edu")) return false;

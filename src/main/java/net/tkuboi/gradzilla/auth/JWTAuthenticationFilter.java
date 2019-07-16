@@ -11,6 +11,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,8 +47,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                           javax.servlet.http.HttpServletResponse response,
                                           javax.servlet.FilterChain chain,
                                           Authentication authResult)
-    throws java.io.IOException,
-    javax.servlet.ServletException {
+    throws java.io.IOException, javax.servlet.ServletException {
     String token = Jwts.builder()
       .setSubject((
         (org.springframework.security.core.userdetails.User)
@@ -55,6 +55,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
       .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
       .signWith(SignatureAlgorithm.HS512, SECRET)
       .compact();
-    response.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+    PrintWriter pw = response.getWriter();
+    pw.print("{\"token\":\"");
+    pw.print(token);
+    pw.print("\"}");
+    pw.flush();
+    pw.close();
   }
 }
