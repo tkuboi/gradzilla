@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService } from '@/services';
+import { CourseService, AuthenticationService } from '@/services';
 
 @Component({
   selector: 'app-course-list',
@@ -8,13 +8,18 @@ import { CourseService } from '@/services';
 })
 export class CourseListComponent implements OnInit {
   courses;
+  user;
 
-  constructor(private courseService: CourseService) { }
+  constructor(
+    private courseService: CourseService,
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit() {
-    this.courses = this.courseService.getAll().subscribe(data => {
+    this.user = this.authenticationService.currentUserValue;
+    this.courseService.getAllByUser(this.user.username).subscribe(data => {
      this.courses = data;
-    });;
+    });
   }
 
 }

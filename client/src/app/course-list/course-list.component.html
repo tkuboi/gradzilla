@@ -1,9 +1,11 @@
 <h2>Your Courses</h2>
-  
-<div *ngFor="let course of courses;">
+
+<div *ngIf="courses">
+<div *ngFor="let course of courses">
   <h3>
     <a [title]="course.name + ' details'" [routerLink]="['/assignments', course.name]">
       {{course.name}}
     </a>
   </h3>
+</div>
 </div>

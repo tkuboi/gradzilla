@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AssignmentsService, UploadService } from  '@/services';
+import { AuthenticationService, AssignmentsService, UploadService } from  '@/services';
 
 @Component({
   selector: 'app-submission',
@@ -12,12 +12,13 @@ export class SubmissionComponent implements OnInit {
   assignment;
   form: FormGroup;
   error: string;
-  userId: string = 'tkuboi';
+  username: string;
   uploadResponse = { status: '', message: '', filePath: '' };
 
   constructor(private formBuilder: FormBuilder,
               private uploadService: UploadService,
               private assignmentsService: AssignmentsService,
+              private authenticationService: AuthenticationService,
               private route: ActivatedRoute) {
   }
 
@@ -25,6 +26,7 @@ export class SubmissionComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
      this.assignment = this.assignmentsService.assignments[+params.get('assignmentId')];
     });
+    this.username = this.authenticationService.currentUserValue.username;
     this.form = this.formBuilder.group({
       submission: ['']
     });
@@ -45,7 +47,7 @@ export class SubmissionComponent implements OnInit {
     formData.append('assignmentName', this.assignment.name);
     formData.append('assignmentId', this.assignment.id);
 
-    this.uploadService.upload(formData, this.userId).subscribe(
+    this.uploadService.upload(formData, this.username).subscribe(
       (res) => this.uploadResponse = res,
       (err) => this.error = err
     );

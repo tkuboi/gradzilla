@@ -3,15 +3,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpErrorResponse, HttpEventType } from  '@angular/common/http';
 import { map } from  'rxjs/operators';
 
+import { config } from '@/config';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-  SERVER_URL: string = "http://localhost:8080";
   constructor(private httpClient: HttpClient) { }
 
   public upload(data, userId) {
-    let uploadURL = `${this.SERVER_URL}/upload/${userId}`;
+    let uploadURL = `${config.apiUrl}/upload/${userId}`;
 
     return this.httpClient.post<any>(uploadURL, data, {
       reportProgress: true,
