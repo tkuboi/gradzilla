@@ -9,6 +9,7 @@ import { CourseService, AuthenticationService } from '@/services';
 export class CourseListComponent implements OnInit {
   courses;
   user;
+  selected;
 
   constructor(
     private courseService: CourseService,
@@ -19,7 +20,8 @@ export class CourseListComponent implements OnInit {
     this.user = this.authenticationService.currentUserValue;
     this.courseService.getAllByUser(this.user.username).subscribe(data => {
      this.courses = data;
-    });
+     this.selected = data[0].name;
+     });
   }
 
 }

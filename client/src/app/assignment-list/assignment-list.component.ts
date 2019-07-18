@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AssignmentService, AssignmentsService } from '@/services';
+import { Component, OnInit, Input } from '@angular/core';
+import { AssignmentService, DataService } from '@/services';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -8,21 +8,24 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./assignment-list.component.css']
 })
 export class AssignmentListComponent implements OnInit {
-  course: string;
+  @Input() course: string;
   assignments: Array<any>;
+  selected: string;
 
   constructor(private assignmentService: AssignmentService,
-                  private assignmentsService: AssignmentsService,
+                  private dataService: DataService,
                   private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-     this.course = params.get('courseName');
-    });
     this.assignmentService.getAll(this.course).subscribe(data => {
      this.assignments = data;
-     this.assignmentsService.assignments = data;
+     this.dataService.assignments = data;
     });
   }
 
+  onClick(idx) {
+    let assignment = this.dataService.assignments[idx];
+    this.dataService.changeAssignmentIdx(idx);
+    this.selected = assignment;
+  }
 }

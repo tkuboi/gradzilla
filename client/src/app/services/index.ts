@@ -5,4 +5,4 @@ export * from './upload.service';
 export * from './submission-result.service';
 export * from './course.service';
 export * from './assignment.service';
-export * from './assignments.service';
+export * from './data.service';

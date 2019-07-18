@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SubmissionResultService } from '@/services'
+import { DataService, SubmissionResultService } from '@/services'
 
 @Component({
   selector: 'app-submission-list',
@@ -8,14 +8,22 @@ import { SubmissionResultService } from '@/services'
 })
 export class SubmissionListComponent implements OnInit {
   submissions;
-  @Input() assignmentId: number;
+  assignment;
   @Input() user: string;
 
-  constructor(private submissionResultService: SubmissionResultService) { }
+  constructor(
+    private submissionResultService: SubmissionResultService,
+    private dataService: DataService
+  ) { }
 
   ngOnInit() {
-    this.submissionResultService.getAll(this.user, this.assignmentId).subscribe(data => {
-     this.submissions = data;
+    this.dataService.currentAssignmentIdx.subscribe(idx => {
+       this.assignment = this.dataService.assignments[+idx]; 
+       this.submissionResultService
+         .getAll(this.user, this.assignment.id).subscribe(data => {
+           this.submissions = data;
+         });
+       console.log(this.assignment);
     });
   }
 

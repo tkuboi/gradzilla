@@ -1,9 +1,10 @@
-<h1>Assignment</h1>
 <div *ngIf="assignment">
-    <h3>{{ assignment.course }} {{ assignment.name }}</h3>
+    <h4>{{ assignment.course }} {{ assignment.name }}</h4>
 
 </div>
-<h3>Submit your work!</h3>
+<mat-tab-group>
+    <mat-tab label="submit">
+<h4>Submit your work!</h4>
 <div>
   <div *ngIf="error">
     {{ error.message }}
@@ -30,6 +31,12 @@
   <div *ngIf="uploadResponse.message !== ''">
       <div [innerHtml]="uploadResponse.message"></div>
   </div>
-
-  <app-submission-list [user]="username" [assignmentId]="assignment.id"></app-submission-list>
 </div>
+    </mat-tab>
+
+    <mat-tab label="submissions">
+  <div *ngIf="assignment">
+  <app-submission-list [user]="username"></app-submission-list>
+  </div>
+    </mat-tab>
+</mat-tab-group>

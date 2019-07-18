@@ -1,8 +1,15 @@
+<mat-accordion>
 <div *ngFor="let sub of submissions;">
-    <ul>
-        <li>{{ sub.submissionTime }}</li>
-        <li>{{ sub.status }}</li>
-        <li>{{ sub.score }}</li>
-        <li><p [innerHtml]="sub.result"></p></li>
-    </ul>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+          {{ sub.submissionTime }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ sub.status }} SCORE: {{ sub.score }}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+     <p [innerHtml]="sub.result"></p>
+  </mat-expansion-panel>
 </div>
+</mat-accordion>

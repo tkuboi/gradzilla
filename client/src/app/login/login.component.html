@@ -1,24 +1,37 @@
-<h2>Login</h2>
+<mat-card class="login-card example-card">
+   <mat-card-header>
+     <mat-card-title>Login</mat-card-title>
+   </mat-card-header>
+   <mat-card-content>
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-        <label for="username">Username</label>
-        <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+        <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Username" type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
             <div *ngIf="f.username.errors.required">Username is required</div>
         </div>
+        </mat-form-field>
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+        <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
             <div *ngIf="f.password.errors.required">Password is required</div>
         </div>
+        </mat-form-field>
     </div>
-    <div class="form-group">
-        <button [disabled]="loading" class="btn btn-primary">
+    <!--<div class="form-group">-->
+<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+   <mat-card-actions>
+        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Login
         </button>
-        <a routerLink="/register" class="btn btn-link">Register</a>
-    </div>
+        <a mat-stroked-button routerLink="/register" class="btn btn-link">Register</a>
+   </mat-card-actions>
+        <!--</div>-->
 </form>
+   </mat-card-content>
+ </mat-card>
