@@ -1,0 +1,14 @@
+.column {
+  float: left;
+  padding: 0.5rem;
+  height: 700px;
+  overflow-y: scroll;
+}
+
+.left {
+  width: 25%;
+}
+
+.right {
+  width: 71%;
+}

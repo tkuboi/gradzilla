@@ -60,6 +60,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     PrintWriter pw = response.getWriter();
     pw.print("{\"token\":\"");
     pw.print(token);
+    pw.print("\",\"role\":\"");
+    pw.print((
+        (org.springframework.security.core.userdetails.User)
+          authResult.getPrincipal()).getAuthorities().toArray()[0]);
     pw.print("\"}");
     pw.flush();
     pw.close();

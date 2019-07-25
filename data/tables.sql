@@ -1,5 +1,6 @@
 DROP TABLE if exists Enrollment;
 DROP TABLE if exists Submission;
+DROP TABLE if exists Grades;
 DROP TABLE if exists Grader;
 DROP TABLE if exists Assignment;
 DROP TABLE if exists Course;
@@ -17,7 +18,7 @@ create table if not exists User(
     last VARCHAR(255),
     password VARCHAR(255),
     role ENUM('ADMIN', 'STUDENT'),
-    active TINYINT(1),
+    active TINYINT(1) DEFAULT 0,
     PRIMARY KEY (name));
 create table if not exists Enrollment(
     user VARCHAR(32),
@@ -65,6 +66,17 @@ create table if not exists Grader(
     program VARCHAR(255),
     args VARCHAR(255),
     copy TINYINT(1) DEFAULT 0,
+    type ENUM("TEST", "LINT") DEFAULT "TEST",
     PRIMARY KEY (id),
     FOREIGN KEY (assignment) REFERENCES Assignment(id));
+create table if not exists Grades (
+    user VARCHAR(32) NOT NULL,
+    assignment INT NOT NULL,
+    course VARCHAR(16) NOT NULL,
+    grade INT,
+    PRIMARY KEY (user, assignment),
+    FOREIGN KEY (assignment) REFERENCES Assignment(id),
+    FOREIGN KEY (user) REFERENCES User(name),
+    FOREIGN KEY (course) REFERENCES Course(name)
+);
 

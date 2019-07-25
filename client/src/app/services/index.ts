@@ -6,3 +6,5 @@ export * from './submission-result.service';
 export * from './course.service';
 export * from './assignment.service';
 export * from './data.service';
+export * from './assignment-type.service';
+export * from './grader.service';

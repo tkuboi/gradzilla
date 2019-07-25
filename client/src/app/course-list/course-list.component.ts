@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CourseService, AuthenticationService } from '@/services';
+import { CourseService, AuthenticationService, DataService } from '@/services';
 
 @Component({
   selector: 'app-course-list',
@@ -12,16 +12,33 @@ export class CourseListComponent implements OnInit {
   selected;
 
   constructor(
+    private dataService: DataService,
     private courseService: CourseService,
     private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
     this.user = this.authenticationService.currentUserValue;
-    this.courseService.getAllByUser(this.user.username).subscribe(data => {
-     this.courses = data;
-     this.selected = data[0].name;
-     });
+    if (this.user.role === 'ADMIN') {
+      this.courseService.getAll().subscribe(data => {
+        this.courses = data;
+        this.selected = data[0].name;
+        this.dataService.changeCourse(this.selected);
+      });
+    }
+    else {
+      this.courseService.getAllByUser(this.user.username).subscribe(data => {
+        this.courses = data;
+        this.selected = data[0].name;
+        this.dataService.changeCourse(this.selected);
+      });
+    }
   }
 
+  onCourseChange(event) {
+    console.log(event);
+    if (event.value) {
+     this.dataService.changeCourse(event.value);
+    }
+  }
 }

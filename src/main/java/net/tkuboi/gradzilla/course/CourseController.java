@@ -1,10 +1,8 @@
 package net.tkuboi.gradzilla.course;
 
+import net.tkuboi.gradzilla.utils.RestResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,5 +21,21 @@ public class CourseController {
   @GetMapping(value = "/{userId}/courses")
   public List<Course> getCoursesByUser(@PathVariable(value="userId") String userId) {
     return this.courseRepository.findAllByUser(userId);
+  }
+
+  @PostMapping(value="/courses/put")
+  public Course saveCourse(@RequestBody Course course) {
+    this.courseRepository.save(course);
+    return course;
+  }
+
+  @PostMapping(value="/courses/delete/{name}")
+  public RestResponseDto deleteCourse(@PathVariable(value="name") String name,
+                                      @RequestBody Course course) {
+    RestResponseDto result = new RestResponseDto();
+    result.setStatus(RestResponseDto.Status.ERROR.name());
+    this.courseRepository.delete(course);
+    result.setStatus(RestResponseDto.Status.SUCCESS.name());
+    return result;
   }
 }

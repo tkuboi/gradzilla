@@ -1,0 +1,27 @@
+<div>
+    <h4 *ngIf="assignment"> {{ assignment.name }} </h4>
+    <mat-accordion>
+  <mat-expansion-panel *ngFor="let grader of graders">
+      <mat-expansion-panel-header>
+      <mat-panel-title>
+        ID: {{ grader.id }}
+        SEQ: {{ grader.seq }}
+      </mat-panel-title>
+      </mat-expansion-panel-header>
+        <ul>
+            <li>FILE: {{ grader.filePath }}</li>
+              <li>PROGRAM: {{ grader.program }}</li>
+              <li>ARGS: {{ grader.args }}</li>
+          <li>COPY: {{ grader.copy }}</li>
+        </ul>
+        <div><button mat-button color="primary" (click)="onDelete(grader)">Delete</button></div>
+    </mat-expansion-panel>
+    </mat-accordion>
+    <div><button mat-stroked-button color="primary" (click)="onAdd()">Add</button></div>
+</div>
+<div>
+  <!-- Use ng-template to ensure that the generated components end up in the right place -->
+  <ng-template #container>
+
+  </ng-template>
+</div>

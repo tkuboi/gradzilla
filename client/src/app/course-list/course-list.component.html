@@ -1,20 +1,9 @@
-<div class="page-header-area">
-    <h4>Your Courses</h4>
+    <h4>Courses</h4>
 <mat-form-field>
   <mat-label>Select a course</mat-label>
-  <mat-select [(value)]="selected">
+  <mat-select [(value)]="selected" (selectionChange)="onCourseChange($event)">
     <mat-option *ngFor="let course of courses;" [value]="course.name">
       {{ course.name }}
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-divider></mat-divider>
-<div *ngIf="selected">
-<app-assignment-list [course]="selected"></app-assignment-list>
-</div>
-  <!--<h3>
-    <a [title]="course.name + ' details'" [routerLink]="['/assignments', course.name]">
-      {{course.name}}
-    </a>
-  </h3>-->
-</div>

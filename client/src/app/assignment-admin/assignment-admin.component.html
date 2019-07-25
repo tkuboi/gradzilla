@@ -1,0 +1,21 @@
+<div *ngIf="assignments" class="column left">
+  <h4>Assignments</h4>
+
+  <div *ngFor="let assignment of assignments; index as assignmentId">
+  <h3>
+      <button mat-button color="primary" (click)="onClick(assignment)">{{assignment.name}}</button>
+  </h3>
+  <div>Open: {{ assignment.open }}</div>
+  <div>Due: {{ assignment.due }} </div>
+  <div><button mat-stroked-button color="primary" (click)="onEdit(assignment)">Edit</button></div>
+  </div>
+  <div>
+      <button mat-stroked-button color="primary" (click)="onEdit(null)">Add</button>
+  </div>
+</div>
+<div class="column right">
+<!-- Use ng-template to ensure that the generated components end up in the right place -->
+      <ng-template #container>
+
+      </ng-template>
+</div>

@@ -22,16 +22,14 @@
         </div>
         </mat-form-field>
     </div>
-    <!--<div class="form-group">-->
 <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
    <mat-card-actions>
         <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary">
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
             Login
         </button>
-        <a mat-stroked-button routerLink="/register" class="btn btn-link">Register</a>
+        <!--<a mat-stroked-button routerLink="/" class="btn btn-link">Register</a>-->
    </mat-card-actions>
-        <!--</div>-->
 </form>
    </mat-card-content>
  </mat-card>

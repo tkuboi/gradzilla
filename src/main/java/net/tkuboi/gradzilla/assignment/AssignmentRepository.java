@@ -6,5 +6,5 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface AssignmentRepository extends JpaRepository<Assignment, Integer> {
-  List<Assignment> findAllByCourseEqualsOrderByName(String course);
+  List<Assignment> findAllByCourseEqualsOrderByTypeAscIdAsc(String course);
 }

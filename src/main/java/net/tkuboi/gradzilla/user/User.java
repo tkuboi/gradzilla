@@ -28,7 +28,7 @@ public class User {
   @Column(name="role")
   private String role;
   @Column(name="active")
-  private boolean active;
+  private Boolean active;
 
   public User() {
     this.name = null;
@@ -36,14 +36,18 @@ public class User {
     this.first = null;
     this.last = null;
     this.password = null;
+    this.role = Role.STUDENT.name();
+    this.active = false;
   }
 
-  public User(String name, String email, String first, String last, String password) {
+  public User(String name, String email, String first, String last, String password, String role, boolean active) {
     this.name = name;
     this.email = email;
     this.first = first;
     this.last = last;
     this.password = password;
+    this.role = role;
+    this.active = active;
   }
 
   public String getName() {

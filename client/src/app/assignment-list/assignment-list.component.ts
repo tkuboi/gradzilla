@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AssignmentService, DataService } from '@/services';
-import { ActivatedRoute } from '@angular/router';
+import { AssignmentService, AuthenticationService, DataService } from '@/services';
+import { ActivatedRoute, Router } from '@angular/router';
+
+import { User } from '@/models';
+import {Removable } from '@/interfaces';
 
 @Component({
   selector: 'app-assignment-list',
@@ -8,18 +11,26 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./assignment-list.component.css']
 })
 export class AssignmentListComponent implements OnInit {
-  @Input() course: string;
+  course: string;
   assignments: Array<any>;
   selected: string;
+  user: User;
 
   constructor(private assignmentService: AssignmentService,
-                  private dataService: DataService,
-                  private route: ActivatedRoute) { }
+              private dataService: DataService,
+              private authenticationService: AuthenticationService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.assignmentService.getAll(this.course).subscribe(data => {
-     this.assignments = data;
-     this.dataService.assignments = data;
+    this.user = this.authenticationService.currentUserValue;
+    this.dataService.currentCourse.subscribe(acourse => {
+      this.course = acourse;
+      this.assignmentService.getAll(this.course).subscribe(data => {
+        this.assignments = data;
+        this.dataService.assignments = data;
+        this.dataService.changeAssignmentIdx(0);
+      });
     });
   }
 
@@ -28,4 +39,5 @@ export class AssignmentListComponent implements OnInit {
     this.dataService.changeAssignmentIdx(idx);
     this.selected = assignment;
   }
+
 }

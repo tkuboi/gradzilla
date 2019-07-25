@@ -29,11 +29,11 @@ public class Enrollment {
   }
 
   public Enrollment(String user, String course, Integer section, Integer year, String quarter) {
-    this.user = null;
-    this.course = null;
-    this.section = null;
-    this.year = null;
-    this.quarter = null;
+    this.user = user;
+    this.course = course;
+    this.section = section;
+    this.year = year;
+    this.quarter = quarter;
   }
 
   public String getUser() {

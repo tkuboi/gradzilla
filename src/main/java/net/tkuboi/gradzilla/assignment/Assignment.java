@@ -7,6 +7,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Id;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -24,19 +28,24 @@ public class Assignment {
   @Column(name = "type")
   private Integer type;
   @Column(name = "open")
-  private Integer open;
+  private Timestamp open;
   @Column(name = "due")
-  private Integer due;
+  private Timestamp due;
 
   public Assignment() {
     this.course = null;
     this.name = null;
+    this.type = null;
+    this.open = null;
+    this.due = null;
   }
 
-  public Assignment(String course, String name, int type) {
+  public Assignment(String course, String name, Integer type, Timestamp open, Timestamp due) {
     this.course = course;
     this.name = name;
     this.type = type;
+    this.open = open;
+    this.due = due;
   }
 
   public int getId() {
@@ -69,5 +78,29 @@ public class Assignment {
 
   public void setType(int type) {
     this.type = type;
+  }
+
+  public Timestamp getOpen() {
+    return open;
+  }
+
+  /*public void setOpen(Timestamp open) {
+    this.open = open;
+  }*/
+
+  public void setOpen(Long open) {
+    this.open  = new Timestamp(open);
+  }
+
+  public Timestamp getDue() {
+    return due;
+  }
+
+  /*public void setDue(Timestamp due) {
+    this.due = due;
+  }*/
+
+  public void setDue(Long due) {
+    this.due = new Timestamp(due);
   }
 }

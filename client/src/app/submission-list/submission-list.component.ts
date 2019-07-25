@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { DataService, SubmissionResultService } from '@/services'
+import { AuthenticationService, DataService, SubmissionResultService } from '@/services'
 
 @Component({
   selector: 'app-submission-list',
@@ -9,20 +9,30 @@ import { DataService, SubmissionResultService } from '@/services'
 export class SubmissionListComponent implements OnInit {
   submissions;
   assignment;
-  @Input() user: string;
+  user: string;
 
   constructor(
+    private authenticationService: AuthenticationService,
     private submissionResultService: SubmissionResultService,
     private dataService: DataService
   ) { }
 
   ngOnInit() {
+    this.user = this.authenticationService.currentUserValue.username;
     this.dataService.currentAssignmentIdx.subscribe(idx => {
-       this.assignment = this.dataService.assignments[+idx]; 
-       this.submissionResultService
-         .getAll(this.user, this.assignment.id).subscribe(data => {
-           this.submissions = data;
-         });
+       if (this.dataService.assignments) {
+         this.assignment = this.dataService.assignments[+idx];
+          if (this.assignment) {
+            this.submissionResultService
+              .getAll(this.user, this.assignment.id).subscribe(data => {
+                this.submissions = data;
+              });
+          }
+        }
+        else {
+          this.assignment = null;
+          this.submissions = null;
+        }
        console.log(this.assignment);
     });
   }

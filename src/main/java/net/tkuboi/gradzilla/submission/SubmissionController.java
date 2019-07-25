@@ -18,6 +18,7 @@ import java.util.List;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class SubmissionController {
 
   private FileStorageProperties fileStorageProperties;
@@ -33,8 +34,7 @@ public class SubmissionController {
     this.graderRepository = graderRepository;
   }
 
-  @PostMapping(value="/upload/{userId}")
-  @CrossOrigin(origins = "http://localhost:4200")
+  @PostMapping(value="/submissions/put/{userId}")
   protected SubmissionResponse doPost(@PathVariable(value="userId") String userId,
                           @RequestParam("file") MultipartFile file,
                           @RequestParam("filename") String filename,
@@ -71,13 +71,11 @@ public class SubmissionController {
   }
 
   @GetMapping(value = "/submissions/{userId}/{assignmentId}")
-  @CrossOrigin(origins = "http://localhost:4200")
   public List<Submission> getSubmissions(@PathVariable("userId") String userId, @PathVariable("assignmentId") Integer assignmentId) {
     return submissionRepository.findAllByAssignmentAndUserOrderBySubmissionTimeDesc(assignmentId, userId);
   }
 
   @GetMapping(value = "/submission/{submissionId}")
-  @CrossOrigin(origins = "http://localhost:4200")
   public Submission getSubmission(@PathVariable(value = "submissionId") Integer submissionId) {
     return submissionRepository.findById(submissionId).get();
   }

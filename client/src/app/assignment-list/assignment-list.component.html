@@ -1,17 +1,9 @@
-<div class="page">
-<div class="page-col-1">
-<h4>Assigment List</h4>
+<div *ngIf="assignments">
+<h4>Assignments</h4>
 
 <div *ngFor="let assignment of assignments; index as assignmentId">
   <h3>
-    <button mat-button color="primary" (click)="onClick(assignmentId)">{{assignment.name}}</button>
+      <button mat-button color="primary" (click)="onClick(assignmentId)">{{assignment.name}}</button>
   </h3>
-</div>
-</div>
-<mat-divider [vertical]="true"></mat-divider>
-<div class="page-col-2">
-<div *ngIf="selected">
-    <app-submission></app-submission>
-</div>
 </div>
 </div>

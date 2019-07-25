@@ -7,6 +7,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "Grader")
 public class Grader {
+  public enum Type {
+    TEST,
+    LINT
+  }
+
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = IDENTITY)
@@ -23,15 +28,19 @@ public class Grader {
   private String args;
   @Column(name = "copy")
   private Integer copy;
+  @Column(name = "type")
+  private String type;
 
   public Grader() {}
 
-  public Grader(int assignment, int seq, String filePath, String program, String args) {
+  public Grader(int assignment, int seq, String filePath, String program, String args, Integer copy, String type) {
     this.assignment = assignment;
     this.seq = seq;
     this.filePath = filePath;
     this.program = program;
     this.args = args;
+    this.copy = copy;
+    this.type = type;
   }
 
   public int getId() {
@@ -88,6 +97,14 @@ public class Grader {
 
   public void setCopy(Integer copy) {
     this.copy = copy;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
 }

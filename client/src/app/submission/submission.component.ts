@@ -23,10 +23,14 @@ export class SubmissionComponent implements OnInit {
   }
 
   ngOnInit() {
-     this.dataService.currentAssignmentIdx.subscribe(idx => {
-       this.assignment = this.dataService.assignments[+idx];
-       console.log(this.assignment);
-       });
+      this.dataService.currentAssignmentIdx.subscribe(idx => {
+      console.log(this.dataService.assignments);
+      if (this.dataService.assignments) {
+        this.assignment = this.dataService.assignments[+idx];
+      } else {
+        this.assignment = null;
+      }
+    });
     this.username = this.authenticationService.currentUserValue.username;
     this.form = this.formBuilder.group({
       submission: ['']
@@ -48,7 +52,7 @@ export class SubmissionComponent implements OnInit {
     formData.append('assignmentName', this.assignment.name);
     formData.append('assignmentId', this.assignment.id);
 
-    this.uploadService.upload(formData, this.username).subscribe(
+    this.uploadService.uploadSubmission(formData, this.username).subscribe(
       (res) => this.uploadResponse = res,
       (err) => this.error = err
     );

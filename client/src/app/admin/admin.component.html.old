@@ -1,0 +1,18 @@
+<div class="page-header-area">
+<app-course-list></app-course-list>
+</div>
+<mat-divider></mat-divider>
+<div>
+    <!--<div *ngIf="selected">-->
+        <div class="page">
+            <div class="page-col-1">
+<app-assignment-list></app-assignment-list>
+<app-edit-assignment></app-edit-assignment>
+            </div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="page-col-2">
+                <app-grader-list></app-grader-list>
+                <app-grader></app-grader>
+            </div>
+        </div>
+</div>

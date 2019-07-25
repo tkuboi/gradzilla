@@ -1,7 +1,6 @@
 <div *ngIf="assignment">
     <h4>{{ assignment.course }} {{ assignment.name }}</h4>
 
-</div>
 <mat-tab-group>
     <mat-tab label="submit">
 <h4>Submit your work!</h4>
@@ -36,7 +35,8 @@
 
     <mat-tab label="submissions">
   <div *ngIf="assignment">
-  <app-submission-list [user]="username"></app-submission-list>
+  <app-submission-list></app-submission-list>
   </div>
     </mat-tab>
 </mat-tab-group>
+</div>

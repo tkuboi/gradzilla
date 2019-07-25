@@ -38,9 +38,11 @@ export class AuthenticationService {
           to keep user logged in between page refreshes
         */
         let token = resp.token;
+        let role = resp.role;
         let user = new User();
         user.username = username;
         user.token = token;
+        user.role = role;
         localStorage.setItem('currentUser', JSON.stringify(user));
         this.currentUserSubject.next(user);
         return resp;

@@ -1,0 +1,55 @@
+<mat-card class="edit-entity-card example-card">
+   <mat-card-header>
+     <mat-card-title>Edit Assignment</mat-card-title>
+   </mat-card-header>
+   <mat-card-content>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form">
+    <div class="form-group">
+    <mat-form-field class="example-full-width">
+      <mat-label>Course</mat-label>
+        <input matInput required placeholder="Course" formControlName="course" [value]="course">
+    </mat-form-field>
+    </div>
+    <div class="form-group">
+    <mat-form-field class="example-full-width">
+      <mat-label>Name</mat-label>
+        <input matInput required placeholder="Name" formControlName="name">
+    </mat-form-field>
+    </div>
+
+    <div class="form-group">
+    <mat-form-field>
+  <mat-label>Type</mat-label>
+  <select matNativeControl required formControlName="type">
+      <option *ngFor="let assignmentType of assignmentTypes" [value]="assignmentType.id">{{ assignmentType.name }}</option>
+  </select>
+  </mat-form-field>
+  </div>
+
+    <mat-form-field>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="open" placeholder="Choose the open date" [formControl]="openDate" formControlName="open">
+      <mat-datepicker-toggle matSuffix [for]="open"></mat-datepicker-toggle>
+      <mat-datepicker #open></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="due" placeholder="Choose the due date" [formControl]="dueDate" formControlName="due">
+      <mat-datepicker-toggle matSuffix [for]="due"></mat-datepicker-toggle>
+      <mat-datepicker #due></mat-datepicker>
+    </mat-form-field>
+
+    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+   <mat-card-actions>
+        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" type="submit">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Save 
+        </button>
+        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" (click)="onDelete()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Delete 
+        </button>
+        <button mat-stroked-button color="primary" class="btn btn-primary" (click)="removeMe()">Close</button>
+
+   </mat-card-actions>
+  </form>
+  </mat-card-content>
+</mat-card>

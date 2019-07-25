@@ -6,17 +6,26 @@ import { CourseListComponent } from './course-list/course-list.component';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { AuthGuard } from './helpers';
+import { EditAssignmentComponent } from './edit-assignment/edit-assignment.component';
+import { EditCourseComponent } from './edit-course/edit-course.component';
+import { GraderComponent } from './grader/grader.component';
+import { BaseComponent } from './base/base.component';
+import { AdminComponent } from './admin/admin.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: CourseListComponent,
+    component: BaseComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'assignments/:courseName', component: AssignmentListComponent },
-  { path: 'submission/:assignmentId', component: SubmissionComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'edit-course/:courseId', component: EditCourseComponent },
+  { path: 'edit-course', component: EditCourseComponent },
+  { path: 'edit-assignment/:idx', component: EditAssignmentComponent },
+  { path: 'edit-assignment', component: EditAssignmentComponent },
+  { path: 'edit-grader', component: GraderComponent },
+  { path: 'base', component: BaseComponent },
+  { path: 'admin', component: AdminComponent }
 
 ];
 

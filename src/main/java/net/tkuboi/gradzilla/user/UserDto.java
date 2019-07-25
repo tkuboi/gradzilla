@@ -2,38 +2,40 @@ package net.tkuboi.gradzilla.user;
 
 public class UserDto {
 
-  private String name;
+  private String username;
   private String email;
   private String first;
   private String last;
   private String password;
   private String role;
-  private boolean active;
+  private Boolean active;
+  private String course;
+  private Integer section;
+  private String quarter;
+  private Integer year;
 
   public UserDto() {
-    this.name = null;
+    this.username = null;
     this.email = null;
     this.first = null;
     this.last = null;
     this.password = null;
   }
 
-  public UserDto(String name, String email, String first, String last, String password, String role, boolean active) {
-    this.name = name;
+  public UserDto(String username, String email, String first, String last,
+                 String password, String role, boolean active, String course,
+                 Integer section, String quarter, Integer year) {
+    this.username = username;
     this.email = email;
     this.first = first;
     this.last = last;
     this.password = password;
     this.role = role;
     this.active = active;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
+    this.course = course;
+    this.section = section;
+    this.quarter = quarter;
+    this.year = year;
   }
 
   public String getEmail() {
@@ -82,6 +84,46 @@ public class UserDto {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public String getCourse() {
+    return course;
+  }
+
+  public void setCourse(String course) {
+    this.course = course;
+  }
+
+  public Integer getSection() {
+    return section;
+  }
+
+  public void setSection(Integer section) {
+    this.section = section;
+  }
+
+  public String getQuarter() {
+    return quarter;
+  }
+
+  public void setQuarter(String quarter) {
+    this.quarter = quarter;
+  }
+
+  public Integer getYear() {
+    return year;
+  }
+
+  public void setYear(Integer year) {
+    this.year = year;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public enum Role {
