@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 import { AssignmentService, DataService } from '@/services';
 
-import {Removable } from '@/interfaces';
+import { Removable } from '@/interfaces';
 import { EditAssignmentComponent } from '@/edit-assignment';
 import { GraderListComponent } from '@/grader-list';
+import { formatDate } from '@/helpers';
 
 @Component({
   selector: 'app-assignment-admin',
@@ -118,5 +119,9 @@ export class AssignmentAdminComponent implements OnInit {
       this.container.remove(this.container.indexOf(component));
       this.components.splice(idx, 1);
     }
+  }
+
+  formatDate(dt) {
+    return formatDate(dt);
   }
 }

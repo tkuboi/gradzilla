@@ -1,16 +1,16 @@
 import unittest
-from lab1 import func1
+from lab1 import func1, func2
 
 class MyTest(unittest.TestCase):
     def runTest(self):
         self.test1()
-        #self.test2()
+        self.test2()
 
     def test1(self):
         self.assertTrue(func1(1));
 
     def test2(self):
-        self.assertFalse(func1(1));
+        self.assertFalse(func2(1));
 
 def get_score(max_score, result):
     score = max_score

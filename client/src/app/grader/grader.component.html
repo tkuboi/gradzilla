@@ -25,7 +25,7 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="full-width">
         <mat-label>sequence number</mat-label>
         <mat-select required formControlName="seq">
           <mat-option value="1">1</mat-option>
@@ -37,13 +37,13 @@
       </mat-form-field>
     </div>
     <div class="form-group">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="full-width">
         <mat-label>Execution Program</mat-label>
         <input matInput required placeholder="program" formControlName="program">
       </mat-form-field>
     </div>
     <div class="form-group">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="full-width">
         <mat-label>Args</mat-label>
         <input matInput placeholder="args" formControlName="args">
       </mat-form-field>

@@ -19,13 +19,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   { path: 'login', component: LoginComponent },
-  { path: 'edit-course/:courseId', component: EditCourseComponent },
-  { path: 'edit-course', component: EditCourseComponent },
-  { path: 'edit-assignment/:idx', component: EditAssignmentComponent },
-  { path: 'edit-assignment', component: EditAssignmentComponent },
-  { path: 'edit-grader', component: GraderComponent },
-  { path: 'base', component: BaseComponent },
-  { path: 'admin', component: AdminComponent }
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
 
 ];
 

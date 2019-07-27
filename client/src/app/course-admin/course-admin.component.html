@@ -1,21 +1,18 @@
 <div class="column left">
-<ul>
-    <li *ngFor="let course of courses">
-      <div>
+<div class="courses-list container">
+    <div *ngFor="let course of courses" class="content">
+      <div class="content">
       <button mat-button color="primary" (click)="onSelectCourse(course.name)">{{ course.name }}</button>
       </div>
-      <div>
-        <div>
-        Short Description: {{ course.shortDescription }}<br>
-        Description: {{ course.description }}
-        </div>
-        <div>
+      <div class="content">{{ course.shortDescription }}</div>
+      <div class="content">
         <button mat-stroked-button color="primary" (click)="onEditCourse(course)">Edit</button>
-        </div>
       </div>
-    </li>
-</ul>
-<button mat-stroked-button color="primary" (click)="onEditCourse(null)">Add</button>
+    </div>
+    <div class="content">
+    <button mat-stroked-button color="primary" (click)="onEditCourse(null)">Add</button>
+    </div>
+</div>
 </div>
 <div class="column right">
 <!-- Use ng-template to ensure that the generated components end up in the right place -->

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { User } from '@/models';
 import {Removable } from '@/interfaces';
+import { formatDate } from '@/helpers';
 
 @Component({
   selector: 'app-assignment-list',
@@ -40,4 +41,7 @@ export class AssignmentListComponent implements OnInit {
     this.selected = assignment;
   }
 
+  formatDate(dt) {
+    return formatDate(dt);
+  }
 }

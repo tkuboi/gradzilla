@@ -2,8 +2,13 @@
 <h4>Assignments</h4>
 
 <div *ngFor="let assignment of assignments; index as assignmentId">
-  <h3>
-      <button mat-button color="primary" (click)="onClick(assignmentId)">{{assignment.name}}</button>
-  </h3>
+  <div class="container">
+      <div class="content">
+        <button mat-button color="primary" (click)="onClick(assignmentId)">{{assignment.name}}</button>
+      </div>
+      <div class="content">
+      Due: {{ formatDate(assignment.due) }}
+      </div>
+  </div>
 </div>
 </div>

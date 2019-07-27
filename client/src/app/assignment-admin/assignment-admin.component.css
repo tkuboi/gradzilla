@@ -1,7 +1,7 @@
 /* Create three unequal columns that floats next to each other */
 .column {
   float: left;
-  padding: 0.5rem;
+  /*padding: 0.5rem;*/
   height: 700px; /* Should be removed. Only for demonstration */
   overflow-y: scroll;
 }
@@ -13,3 +13,18 @@
 .right {
   width: 55%;
 }
+
+.container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  background-color: gray;
+}
+
+.content {
+  padding: 0.1em;
+  background-color: white;
+  margin: 0px 0.7px 0.7px 0.7px;
+}
+
