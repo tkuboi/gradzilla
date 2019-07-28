@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CourseService, AuthenticationService, DataService } from '@/services';
 
 @Component({
@@ -6,10 +6,11 @@ import { CourseService, AuthenticationService, DataService } from '@/services';
   templateUrl: './course-list.component.html',
   styleUrls: ['./course-list.component.css']
 })
-export class CourseListComponent implements OnInit {
+export class CourseListComponent implements OnInit, OnDestroy {
   courses;
   user;
   selected;
+  subscriptions: Array<any> = new Array<any>();
 
   constructor(
     private dataService: DataService,
@@ -20,18 +21,20 @@ export class CourseListComponent implements OnInit {
   ngOnInit() {
     this.user = this.authenticationService.currentUserValue;
     if (this.user.role === 'ADMIN') {
-      this.courseService.getAll().subscribe(data => {
-        this.courses = data;
-        this.selected = data[0].name;
-        this.dataService.changeCourse(this.selected);
-      });
+      this.subscriptions.push(
+        this.courseService.getAll().subscribe(data => {
+          this.courses = data;
+          this.selected = data[0].name;
+          this.dataService.changeCourse(this.selected);
+        }));
     }
     else {
-      this.courseService.getAllByUser(this.user.username).subscribe(data => {
-        this.courses = data;
-        this.selected = data[0].name;
-        this.dataService.changeCourse(this.selected);
-      });
+      this.subscriptions.push(
+        this.courseService.getAllByUser(this.user.username).subscribe(data => {
+          this.courses = data;
+          this.selected = data[0].name;
+          this.dataService.changeCourse(this.selected);
+        }));
     }
   }
 
@@ -41,4 +44,10 @@ export class CourseListComponent implements OnInit {
      this.dataService.changeCourse(event.value);
     }
   }
+
+  ngOnDestroy() {
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
+  }  
 }

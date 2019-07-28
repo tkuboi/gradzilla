@@ -35,13 +35,12 @@ export class UploadService {
   }
 
   public uploadGrader(data, assignmentId) {
-  let uploadURL = `${config.apiUrl}/graders/put/${assignmentId}`;
+    let uploadURL = `${config.apiUrl}/graders/put/${assignmentId}`;
 
     return this.httpClient.post<any>(uploadURL, data, {
       reportProgress: true,
       observe: 'events'
     }).pipe(map((event) => {
-      console.log(event);
       switch (event.type) {
 
         case HttpEventType.UploadProgress:

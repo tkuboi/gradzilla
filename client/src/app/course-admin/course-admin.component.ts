@@ -2,6 +2,7 @@ import {
 Component,
 ComponentRef,
 OnInit,
+OnDestroy,
 ComponentFactoryResolver,
 Type,
 ViewChild,
@@ -18,7 +19,7 @@ import { AssignmentAdminComponent } from '@/assignment-admin';
   templateUrl: './course-admin.component.html',
   styleUrls: ['./course-admin.component.css']
 })
-export class CourseAdminComponent implements OnInit {
+export class CourseAdminComponent implements OnInit, OnDestroy {
   @ViewChild('container', {read: ViewContainerRef, static: false}) container: ViewContainerRef;
 
   // Keep track of list of generated components for removal purposes
@@ -29,16 +30,22 @@ export class CourseAdminComponent implements OnInit {
   courses;
   course;
 
+  subscriptions: Array<any> = new Array<any>();
+
   constructor(private courseService: CourseService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private dataService: DataService) { }
 
   ngOnInit() {
-    this.courseService.getAll().subscribe(data => this.courses = data);
+    this.subscriptions.push(
+      this.courseService.getAll().subscribe(data => this.courses = data));
   }
 
-  ngOnDestory() {
+  ngOnDestroy() {
     this.removeComponent();
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   onEditCourse(course) {

@@ -1,7 +1,6 @@
 package net.tkuboi.gradzilla.submission;
 
 import net.tkuboi.gradzilla.grader.GraderResultDto;
-import net.tkuboi.gradzilla.grader.GraderRepository;
 import net.tkuboi.gradzilla.grader.GraderService;
 import net.tkuboi.gradzilla.property.FileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +22,15 @@ public class SubmissionController {
 
   private FileStorageProperties fileStorageProperties;
   private SubmissionRepository submissionRepository;
-  private GraderRepository graderRepository;
+  private GraderService graderService;
 
   @Autowired
   public SubmissionController(FileStorageProperties fileStorageProperties,
                               SubmissionRepository submissionRepository,
-                              GraderRepository graderRepository) {
+                              GraderService graderService) {
     this.fileStorageProperties = fileStorageProperties;
     this.submissionRepository = submissionRepository;
-    this.graderRepository = graderRepository;
+    this.graderService = graderService;
   }
 
   @PostMapping(value="/submissions/put/{userId}")
@@ -43,6 +42,7 @@ public class SubmissionController {
                           @RequestParam("assignmentName") String assignment) {
     Path targetPath = null;
     String message = "";
+    Integer score = null;
     try {
       String dir = fileStorageProperties.getUploadDir()
         + "/" + userId
@@ -55,19 +55,15 @@ public class SubmissionController {
       Submission submission =
         new Submission(assignmentId, userId, new Timestamp(System.currentTimeMillis()), targetPath.toString());
       submissionRepository.save(submission);
-      GraderService graderService = new GraderService(
-        graderRepository.findAllByAssignmentOrderBySeq(assignmentId));
-      GraderResultDto gradeResult = graderService.grade(targetPath);
-      submission.setResult(gradeResult.getResult());
+      GraderResultDto gradeResult = graderService.grade(course, submission);
       message = gradeResult.getResult();
-      submission.setScore(gradeResult.getScore());
-      submission.setStatus(Submission.Status.GRADED.toString());
-      submissionRepository.save(submission);
+      score = gradeResult.getScore();
+
     } catch (IOException e) {
       e.printStackTrace();
-      return new SubmissionResponse("error", e.getMessage(), "");
+      return new SubmissionResponse("error", e.getMessage(), "", score);
     }
-    return new SubmissionResponse("success", message, targetPath.toString());
+    return new SubmissionResponse("success", message, targetPath.toString(), score);
   }
 
   @GetMapping(value = "/submissions/{userId}/{assignmentId}")

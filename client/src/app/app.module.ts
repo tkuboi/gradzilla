@@ -36,6 +36,7 @@ import { GraderListComponent } from './grader-list/grader-list.component';
 import { EditCourseComponent } from './edit-course/edit-course.component';
 import { CourseAdminComponent } from './course-admin/course-admin.component';
 import { AssignmentAdminComponent } from './assignment-admin/assignment-admin.component';
+import { ResultDialogComponent } from './result-dialog/result-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AssignmentAdminComponent } from './assignment-admin/assignment-admin.co
     EditCourseComponent,
     CourseAdminComponent,
     AssignmentAdminComponent,
+    ResultDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,7 +94,8 @@ import { AssignmentAdminComponent } from './assignment-admin/assignment-admin.co
     EditAssignmentComponent,
     AssignmentAdminComponent,
     GraderComponent,
-    GraderListComponent
+    GraderListComponent,
+    ResultDialogComponent
   ],
   bootstrap: [AppComponent]
 })

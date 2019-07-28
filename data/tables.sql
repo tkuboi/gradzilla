@@ -69,7 +69,7 @@ create table if not exists Grader(
     type ENUM("TEST", "LINT") DEFAULT "TEST",
     PRIMARY KEY (id),
     FOREIGN KEY (assignment) REFERENCES Assignment(id));
-create table if not exists Grades (
+create table if not exists Grade (
     user VARCHAR(32) NOT NULL,
     assignment INT NOT NULL,
     course VARCHAR(16) NOT NULL,

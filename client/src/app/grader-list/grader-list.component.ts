@@ -1,4 +1,4 @@
-import { Component, OnInit, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 
 import { DataService, GraderService } from '@/services';
 import { Removable } from '@/interfaces';
@@ -9,7 +9,7 @@ import { GraderComponent } from '@/grader';
   templateUrl: './grader-list.component.html',
   styleUrls: ['./grader-list.component.css']
 })
-export class GraderListComponent implements OnInit {
+export class GraderListComponent implements OnInit, OnDestroy {
 @ViewChild('container', {read: ViewContainerRef, static: false}) container: ViewContainerRef;
 
   // Keep track of list of generated components for removal purposes
@@ -24,6 +24,8 @@ export class GraderListComponent implements OnInit {
   //interface for Parent-Child interaction
   public compInteraction: Removable;
 
+  subscriptions: Array<any> = new Array<any>();
+
   constructor(private dataService: DataService,
               private graderService: GraderService,
               private componentFactoryResolver: ComponentFactoryResolver) { }
@@ -33,19 +35,21 @@ export class GraderListComponent implements OnInit {
 
   ngOnDestroy() {
     this.removeComponent();
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   setAssignment(assignment) {
-    console.log(assignment);
     this.assignment = assignment;
     if (this.assignment) {
-      this.graderService.getAll(this.assignment.id).subscribe( data =>
-      this.graders = data);
+      this.subscriptions.push(
+        this.graderService.getAll(this.assignment.id).subscribe( data =>
+          this.graders = data));
     }
   }
 
   onDelete(grader) {
-    console.log(grader);
     this.graderService.delete(grader).subscribe(
     data => {this.setAssignment(this.assignment);},
     err => {alert(err);});
@@ -55,6 +59,15 @@ export class GraderListComponent implements OnInit {
     let componentFactory = this.componentFactoryResolver.resolveComponentFactory(GraderComponent);
     let componentRef: ComponentRef<GraderComponent> = this.container.createComponent(componentFactory);
     let currentComponent = componentRef.instance;
+    currentComponent.selfRef = currentComponent;
+
+    // prividing parent Component reference to get access to parent class methods
+    currentComponent.compInteraction = this;
+
+    currentComponent.setAssignment(this.assignment);
+
+    // add reference for newly created component
+    this.components.push(componentRef);
   }
 
   removeMe() {
@@ -72,4 +85,5 @@ export class GraderListComponent implements OnInit {
       this.components.splice(idx, 1);
     }
   }
+
 }

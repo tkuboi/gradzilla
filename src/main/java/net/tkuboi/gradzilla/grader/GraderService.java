@@ -1,5 +1,13 @@
 package net.tkuboi.gradzilla.grader;
 
+import net.tkuboi.gradzilla.grade.Grade;
+import net.tkuboi.gradzilla.grade.GradeId;
+import net.tkuboi.gradzilla.grade.GradeRepository;
+import net.tkuboi.gradzilla.submission.Submission;
+import net.tkuboi.gradzilla.submission.SubmissionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,10 +21,12 @@ import java.util.regex.Pattern;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
+@Service
 public class GraderService {
-  private List<Grader> graders;
-  private String workDir;
   private static final long timeout = 60000;
+  private final SubmissionRepository submissionRepository;
+  private final GradeRepository gradeRepository;
+  private final GraderRepository graderRepository;
 
   private static class Worker extends Thread {
     private final Process process;
@@ -33,19 +43,18 @@ public class GraderService {
     }
   }
 
-  public GraderService(List<Grader> graders) {
-    this.graders = graders;
-    this.workDir = null;
+  @Autowired
+  public GraderService(SubmissionRepository submissionRepository, GradeRepository gradeRepository, GraderRepository graderRepository) {
+    this.submissionRepository = submissionRepository;
+    this.gradeRepository = gradeRepository;
+    this.graderRepository = graderRepository;
   }
 
-  public GraderService(List<Grader> graders, String workDir) {
-    this.graders = graders;
-    this.workDir = workDir;
-  }
-
-  public GraderResultDto grade(Path targetPath) {
+  public GraderResultDto grade(String course, Submission submission) {
+    List<Grader> graders = graderRepository.findAllByAssignmentOrderBySeq(submission.getAssignment());
     String result = "";
     int score = 0;
+    Path targetPath = Paths.get(submission.getFilePath());
     try {
       unpack(targetPath);
 
@@ -55,19 +64,19 @@ public class GraderService {
         Path testFile = Paths.get(grader.getFilePath());
         Process proc = null;
         String[] cmd = null;
-        Path workDir = null;
+        Path rootDir = null;
         if (grader.getCopy().equals(1)) {
           Path target = Paths.get(subDir + "/" + filename);
           Files.copy(Paths.get(grader.getFilePath()), target, REPLACE_EXISTING);
-          workDir = targetPath.getParent();
+          rootDir = targetPath.getParent();
           cmd = new String[] {grader.getProgram(), target.toString()};
           proc = Runtime.getRuntime()
-            .exec(cmd, null, workDir.toFile());
+            .exec(cmd, null, rootDir.toFile());
         } else {
-          workDir = testFile.getParent();
+          rootDir = testFile.getParent();
           cmd = new String[] {grader.getProgram(), testFile.toString(), targetPath.getParent().toString()};
           proc = Runtime.getRuntime()
-            .exec(cmd, null, workDir.toFile());
+            .exec(cmd, null, rootDir.toFile());
         }
 
         Worker worker = new Worker(proc);
@@ -83,16 +92,23 @@ public class GraderService {
           else if (worker.exit == null) {
             throw new TimeoutException();
           }
+          //Thread.sleep(10000);
         } catch (InterruptedException e) {
           e.printStackTrace();
         } finally {
           proc.destroyForcibly();
         }
       }
+      storeResult(course, submission, score, result);
     } catch (IOException e) {
       e.printStackTrace();
+      result = e.getMessage();
     } catch (TimeoutException e) {
       e.printStackTrace();
+      result = e.getMessage();
+    } catch (Exception e) {
+      e.printStackTrace();
+      result = e.getMessage();
     }
     System.out.println(result);
     return new GraderResultDto(result, score);
@@ -142,5 +158,24 @@ public class GraderService {
       String[] zipcmd = new String[] {"unzip", targetPath.toString()};
       Runtime.getRuntime().exec(zipcmd, null, targetPath.getParent().toFile());
     }
+  }
+
+  private void storeResult(String course, Submission submission, int score, String result) {
+    GradeId id = new GradeId(submission.getUser(), submission.getAssignment());
+    Grade grade = gradeRepository.findById(id);
+    if (grade != null) {
+      if (score > grade.getGrade().intValue()) {
+        grade.setGrade(score);
+      }
+    }
+    else {
+      grade = new Grade(id, course, score);
+    }
+    gradeRepository.save(grade);
+
+    submission.setResult(result);
+    submission.setScore(score);
+    submission.setStatus(Submission.Status.GRADED.toString());
+    submissionRepository.save(submission);
   }
 }

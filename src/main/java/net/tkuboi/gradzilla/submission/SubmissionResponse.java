@@ -4,17 +4,20 @@ public class SubmissionResponse {
   private String status;
   private String message;
   private String filePath;
+  private Integer score;
 
   public SubmissionResponse() {
     this.status = "";
     this.message = "";
     this.filePath = "";
+    this.score = null;
   }
 
-  public SubmissionResponse(String status, String message, String filePath) {
+  public SubmissionResponse(String status, String message, String filePath, Integer score) {
     this.status = status;
     this.message = message;
     this.filePath = filePath;
+    this.score = score;
   }
 
   public String getStatus() {
@@ -39,5 +42,13 @@ public class SubmissionResponse {
 
   public void setFilePath(String filePath) {
     this.filePath = filePath;
+  }
+
+  public Integer getScore() {
+    return score;
+  }
+
+  public void setScore(Integer score) {
+    this.score = score;
   }
 }

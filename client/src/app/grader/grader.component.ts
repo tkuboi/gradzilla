@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
@@ -12,7 +12,7 @@ import { Removable } from '@/interfaces';
   templateUrl: './grader.component.html',
   styleUrls: ['./grader.component.css']
 })
-export class GraderComponent implements OnInit {
+export class GraderComponent implements OnInit, OnDestroy {
   assignment;
   @Input() grader;
   form: FormGroup;
@@ -25,23 +25,22 @@ export class GraderComponent implements OnInit {
   //interface for Parent-Child interaction
   public compInteraction: Removable;
 
+  subscriptions: Array<any> = new Array<any>();
+
   constructor(private formBuilder: FormBuilder,
               private uploadService: UploadService,
               private dataService: DataService,
               private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.dataService.currentAssignmentIdx.subscribe(idx => {
-      if (this.dataService.assignments) {
-        this.assignment = this.dataService.assignments[+idx];
+  /*this.subscriptions.push(
+      this.dataService.currentAssignmentIdx.subscribe(idx => {
+        if (this.dataService.assignments) {
+          this.assignment = this.dataService.assignments[+idx];
         } else {
-        this.assignment = null;
+          this.assignment = null;
         }
-    });
-
-    //this.assignment = new Assignment();
-    //this.assignment.id = 2
-    //this.assignment.course = 'CPE202';
+        }));*/
 
     this.form = this.formBuilder.group({
       seq: [''],
@@ -52,6 +51,10 @@ export class GraderComponent implements OnInit {
       copy: [''],
       pylint: ['']
     });  
+  }
+
+  setAssignment(assignment) {
+    this.assignment = assignment;
   }
 
   onFileChange(event) {
@@ -82,5 +85,11 @@ export class GraderComponent implements OnInit {
 
   removeMe() {
     this.compInteraction.removeComponent();
+  }
+
+  ngOnDestroy() {
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 }

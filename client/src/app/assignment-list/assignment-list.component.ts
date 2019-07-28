@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { AssignmentService, AuthenticationService, DataService } from '@/services';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,11 +11,12 @@ import { formatDate } from '@/helpers';
   templateUrl: './assignment-list.component.html',
   styleUrls: ['./assignment-list.component.css']
 })
-export class AssignmentListComponent implements OnInit {
+export class AssignmentListComponent implements OnInit, OnDestroy {
   course: string;
   assignments: Array<any>;
   selected: string;
   user: User;
+  subscriptions: Array<any> = new Array<any>();
 
   constructor(private assignmentService: AssignmentService,
               private dataService: DataService,
@@ -25,14 +26,15 @@ export class AssignmentListComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authenticationService.currentUserValue;
-    this.dataService.currentCourse.subscribe(acourse => {
-      this.course = acourse;
-      this.assignmentService.getAll(this.course).subscribe(data => {
-        this.assignments = data;
-        this.dataService.assignments = data;
-        this.dataService.changeAssignmentIdx(0);
-      });
-    });
+    this.subscriptions.push(
+      this.dataService.currentCourse.subscribe(acourse => {
+        this.course = acourse;
+        this.assignmentService.getAll(this.course).subscribe(data => {
+          this.assignments = data;
+          this.dataService.assignments = data;
+          this.dataService.changeAssignmentIdx(0);
+        });
+      }));
   }
 
   onClick(idx) {
@@ -43,5 +45,11 @@ export class AssignmentListComponent implements OnInit {
 
   formatDate(dt) {
     return formatDate(dt);
+  }
+
+  ngOnDestroy() {
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 }

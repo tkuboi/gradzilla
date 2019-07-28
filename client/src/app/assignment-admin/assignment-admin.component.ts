@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ComponentRef, ComponentFactoryResolver, ViewContainerRef, ViewChild } from '@angular/core';
 import { AssignmentService, DataService } from '@/services';
 
 import { Removable } from '@/interfaces';
@@ -11,7 +11,7 @@ import { formatDate } from '@/helpers';
   templateUrl: './assignment-admin.component.html',
   styleUrls: ['./assignment-admin.component.css']
 })
-export class AssignmentAdminComponent implements OnInit {
+export class AssignmentAdminComponent implements OnInit, OnDestroy {
   @ViewChild('container', {read: ViewContainerRef, static: false}) container: ViewContainerRef;
 
   // Keep track of list of generated components for removal purposes
@@ -27,23 +27,29 @@ export class AssignmentAdminComponent implements OnInit {
   //interface for Parent-Child interaction
   public compInteraction: Removable;
 
+  subscriptions: Array<any> = new Array<any>();
+
   constructor(private assignmentService: AssignmentService,
               private dataService: DataService,
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    this.dataService.currentCourse.subscribe(acourse => {
-      this.course = acourse;
-      this.assignmentService.getAll(this.course).subscribe(data => {
-        this.assignments = data;
-        this.dataService.assignments = data;
-        this.dataService.changeAssignmentIdx(0);
-      });
-    });
+    this.subscriptions.push(
+      this.dataService.currentCourse.subscribe(acourse => {
+        this.course = acourse;
+        this.assignmentService.getAll(this.course).subscribe(data => {
+          this.assignments = data;
+          this.dataService.assignments = data;
+          this.dataService.changeAssignmentIdx(0);
+        });
+      }));
   }
 
   ngOnDestroy() {
     this.removeComponent();
+    for (let subscription of this.subscriptions) {
+      subscription.unsubscribe();
+    }
   }
 
   setCourse(course) {
@@ -56,11 +62,6 @@ export class AssignmentAdminComponent implements OnInit {
   }
 
   onClick(assignment) {
-  /*let assignment = this.dataService.assignments[idx];
-    this.dataService.changeAssignmentIdx(idx);
-    this.selected = assignment;
-        console.log("onSelectCourse");
-        this.dataService.changeCourse(course);*/
     if (this.components.length > 0) {
       this.removeComponent();
     }
