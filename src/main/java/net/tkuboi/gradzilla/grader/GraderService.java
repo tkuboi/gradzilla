@@ -84,12 +84,12 @@ public class GraderService {
         try {
           worker.join(timeout);
           System.out.println("Exit Code: " + worker.exit);
-          if (worker.exit == 0) {
+          if (worker.exit != null) {
             GraderResultDto resultDto = getOutput(proc);
             result += resultDto.getResult();
-            score += resultDto.getScore();
+            if (worker.exit == 0) score += resultDto.getScore();
           }
-          else if (worker.exit == null) {
+          else {
             throw new TimeoutException();
           }
           //Thread.sleep(10000);

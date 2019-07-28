@@ -3,6 +3,7 @@ package net.tkuboi.gradzilla.submission;
 import net.tkuboi.gradzilla.grader.GraderResultDto;
 import net.tkuboi.gradzilla.grader.GraderService;
 import net.tkuboi.gradzilla.property.FileStorageProperties;
+import net.tkuboi.gradzilla.utils.Md5Hashing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,7 @@ import java.util.List;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "//localhost:4200")
 public class SubmissionController {
 
   private FileStorageProperties fileStorageProperties;
@@ -47,7 +48,8 @@ public class SubmissionController {
       String dir = fileStorageProperties.getUploadDir()
         + "/" + userId
         + "/" + course.replaceAll("\\s+", "_")
-        + "/" + assignment.replaceAll("\\s+", "_");
+        + "/" + assignment.replaceAll("\\s+", "_")
+        + "/" + Md5Hashing.getHash(course + assignment);
       targetPath = Paths.get(dir);
       if (!Files.exists(targetPath)) Files.createDirectories(targetPath);
       targetPath = Paths.get(dir + "/" + filename);
