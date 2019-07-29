@@ -22,10 +22,11 @@
         </div>
         </mat-form-field>
     </div>
-<mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
    <mat-card-actions>
         <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1">
+            <mat-spinner></mat-spinner>
+            </span>
             Login
         </button>
         <!--<a mat-stroked-button routerLink="/" class="btn btn-link">Register</a>-->

@@ -23,20 +23,17 @@
         <input matInput required placeholder="Description" formControlName="description" [value]="course.description">
     </mat-form-field>
     </div>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
-   <mat-card-actions>
-        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" type="submit">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    <mat-card-actions>
+        <button mat-stroked-button color="primary" class="btn btn-primary" type="submit">
             Save
         </button>
-        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" (click)="onDelete()">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            delete 
+        <button mat-stroked-button color="primary" class="btn btn-primary" (click)="onDelete()">
+            delete
         </button>
         <button mat-stroked-button type=" button" color="basic" class="btn btn-primary" (click)="removeMe()">
             close 
         </button>
-   </mat-card-actions>
+    </mat-card-actions>
   </form>
   </mat-card-content>
 </mat-card>

@@ -9,7 +9,7 @@
 </div>
 <div>
   <div *ngIf="error">
-    {{ error.message }}
+    {{ error }}
   </div>
   <div *ngIf="uploadResponse.status === 'success'">
     Successfully uploaded to {{ uploadResponse.filePath }} !
@@ -61,10 +61,8 @@
     <div class="form-group">
         <input type="file" name="script" (change)="onFileChange($event)" />
     </div>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
    <mat-card-actions>
-        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        <button mat-stroked-button color="primary" class="btn btn-primary">
             Save
         </button>
         <button mat-stroked-button type="button" color="basic" class="btn btn-primary" (click)="removeMe()">

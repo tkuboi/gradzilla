@@ -37,19 +37,16 @@
       <mat-datepicker #due></mat-datepicker>
     </mat-form-field>
 
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
-   <mat-card-actions>
-        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" type="submit">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Save 
+    <mat-card-actions>
+        <button mat-stroked-button color="primary" class="btn btn-primary" type="submit">
+            Save
         </button>
-        <button mat-stroked-button color="primary" [disabled]="loading" class="btn btn-primary" (click)="onDelete()">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-            Delete 
+        <button mat-stroked-button color="primary" class="btn btn-primary" (click)="onDelete()">
+            Delete
         </button>
         <button mat-stroked-button type="button" color="basic" class="btn btn-primary" (click)="removeMe()">Close</button>
 
-   </mat-card-actions>
+    </mat-card-actions>
   </form>
   </mat-card-content>
 </mat-card>

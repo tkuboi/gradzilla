@@ -6,7 +6,7 @@
 <h4>Submit your work!</h4>
 <div>
   <div #errorMessage *ngIf="error">
-    {{ error.message }}
+    {{ error }}
   </div>
   <div #uploadStatus *ngIf="uploadResponse.status === 'success'">
     Your submission has been successfully uploaded!
