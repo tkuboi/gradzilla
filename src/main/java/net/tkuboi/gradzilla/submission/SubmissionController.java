@@ -18,7 +18,6 @@ import java.util.List;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @RestController
-@CrossOrigin(origins = "//localhost:4200")
 public class SubmissionController {
 
   private FileStorageProperties fileStorageProperties;

@@ -18,6 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import java.util.Arrays;
+
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -37,8 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.authorizeRequests()
-      .antMatchers("/login").permitAll()
-      .and().authorizeRequests().antMatchers("/**").authenticated()
+      .antMatchers("/assignments/**").permitAll()
+      //.antMatchers("/login").permitAll()
+      //.and().authorizeRequests().antMatchers("/**").authenticated()
       //.and().formLogin()
       //.successHandler(successHandler)
       //.failureHandler(new SimpleUrlAuthenticationFailureHandler())
@@ -58,8 +61,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Bean
   protected CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.applyPermitDefaultValues();
+    configuration.setAllowedOrigins(Arrays.asList("https://cpe202.toshikuboi.net", "http://localhost:4200", "http://localhost"));
+    configuration.setAllowedMethods(Arrays.asList("GET","POST"));
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    source.registerCorsConfiguration("/**", configuration);
     return source;
   }
 }

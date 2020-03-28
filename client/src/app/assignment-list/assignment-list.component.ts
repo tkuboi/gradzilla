@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { AssignmentService, AuthenticationService, DataService } from '@/services';
+import { AssignmentUserService, AuthenticationService, DataService } from '@/services';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { User } from '@/models';
@@ -18,7 +18,7 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
   user: User;
   subscriptions: Array<any> = new Array<any>();
 
-  constructor(private assignmentService: AssignmentService,
+  constructor(private assignmentUserService: AssignmentUserService,
               private dataService: DataService,
               private authenticationService: AuthenticationService,
               private router: Router,
@@ -29,10 +29,10 @@ export class AssignmentListComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.dataService.currentCourse.subscribe(acourse => {
         this.course = acourse;
-        this.assignmentService.getAll(this.course).subscribe(data => {
+        this.assignmentUserService.getAll(this.user.username, this.course).subscribe(data => {
           this.assignments = data;
           this.dataService.assignments = data;
-          this.dataService.changeAssignmentIdx(0);
+          this.dataService.changeAssignmentIdx(data.length - 1);
         });
       }));
   }

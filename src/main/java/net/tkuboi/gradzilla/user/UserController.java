@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http:///localhost:4200")
 public class UserController {
 
   private final UserRepository userRepository;
   private final EnrollmentRepository enrollmentRepository;
 
   @Autowired
-  public UserController(UserRepository userRepository, EnrollmentRepository enrollmentRepository) {
+  public UserController(UserRepository userRepository,
+                        EnrollmentRepository enrollmentRepository) {
     this.userRepository = userRepository;
     this.enrollmentRepository = enrollmentRepository;
   }

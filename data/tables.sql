@@ -11,6 +11,12 @@ create table if not exists Course(
     shortDescription VARCHAR(64),
     description VARCHAR(255),
     PRIMARY KEY (name));
+create table if not exists Quarter(
+    year YEAR(4),
+    quarter ENUM('Fall', 'Winter', 'Spring', 'Summer'),
+    current TINYINT(1),
+    PRIMARY KEY (year, quarter)
+);
 create table if not exists User(
     name VARCHAR(32),
     email VARCHAR(255),
@@ -28,6 +34,7 @@ create table if not exists Enrollment(
     quarter ENUM('Fall', 'Winter', 'Spring', 'Summer'),
     PRIMARY KEY (user, course, year, quarter),
     FOREIGN KEY (course) REFERENCES Course(name),
+    FOREIGN KEY (year, quarter) REFERENCES Quarter(year, quarter),
     FOREIGN KEY (user) REFERENCES User(name));
 create table if not exists AssignmentType(
     id INT AUTO_INCREMENT,
@@ -36,6 +43,8 @@ create table if not exists AssignmentType(
 create table if not exists Assignment(
     id INT AUTO_INCREMENT,
     course VARCHAR(16),
+    year YEAR(4),
+    quarter ENUM('Fall', 'Winter', 'Spring', 'Summer'),
     name VARCHAR(255),
     type INT,
     open TIMESTAMP,
@@ -44,6 +53,7 @@ create table if not exists Assignment(
     instruction TEXT,
     PRIMARY KEY (id),
     FOREIGN KEY (course) REFERENCES Course(name),
+    FOREIGN KEY (year, quarter) REFERENCES Quarter(year, quarter),
     FOREIGN KEY (type) REFERENCES AssignmentType(id));
 create table if not exists Submission(
     id INT AUTO_INCREMENT,
@@ -66,7 +76,7 @@ create table if not exists Grader(
     program VARCHAR(255),
     args VARCHAR(255),
     copy TINYINT(1) DEFAULT 0,
-    type ENUM("TEST", "LINT") DEFAULT "TEST",
+    type ENUM('TEST', 'LINT') DEFAULT 'TEST',
     PRIMARY KEY (id),
     FOREIGN KEY (assignment) REFERENCES Assignment(id));
 create table if not exists Grade (

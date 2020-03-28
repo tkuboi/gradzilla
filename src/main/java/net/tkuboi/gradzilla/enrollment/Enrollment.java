@@ -1,55 +1,40 @@
 package net.tkuboi.gradzilla.enrollment;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import net.tkuboi.gradzilla.grade.GradeId;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Enrollment")
 public class Enrollment {
-  @Id
-  @Column(name="user")
-  private String user;
-  @Column(name="course")
-  private String course;
-  @Column(name="section")
+  @EmbeddedId
+  @AttributeOverrides({ @AttributeOverride(name = "user", column = @Column(name = "user", nullable = false)),
+    @AttributeOverride(name = "course", column = @Column(name = "course", nullable = false)),
+    @AttributeOverride(name = "year", column = @Column(name = "year", nullable = false)),
+    @AttributeOverride(name = "quarter", column = @Column(name = "quarter", nullable = false))})
+  private EnrollmentId id;
+
+  @Column(name = "section")
   private Integer section;
-  @Column(name="year")
-  private Integer year;
-  @Column(name="quarter")
-  private String quarter;
+
+  @Column(name = "active")
+  private Boolean active;
 
   public Enrollment() {
-    this.user = null;
-    this.course = null;
+    this.id = null;
     this.section = null;
-    this.year = null;
-    this.quarter = null;
+    this.active = null;
+  }
+
+  public Enrollment(EnrollmentId id, Integer section, Boolean active) {
+    this.id = id;
+    this.section = section;
+    this.active = active;
   }
 
   public Enrollment(String user, String course, Integer section, Integer year, String quarter) {
-    this.user = user;
-    this.course = course;
+    this.id = new EnrollmentId(user, course, year, quarter);
     this.section = section;
-    this.year = year;
-    this.quarter = quarter;
-  }
-
-  public String getUser() {
-    return user;
-  }
-
-  public void setUser(String user) {
-    this.user = user;
-  }
-
-  public String getCourse() {
-    return course;
-  }
-
-  public void setCourse(String course) {
-    this.course = course;
   }
 
   public Integer getSection() {
@@ -60,19 +45,19 @@ public class Enrollment {
     this.section = section;
   }
 
-  public Integer getYear() {
-    return year;
+  public EnrollmentId getId() {
+    return id;
   }
 
-  public void setYear(Integer year) {
-    this.year = year;
+  public void setId(EnrollmentId id) {
+    this.id = id;
   }
 
-  public String getQuarter() {
-    return quarter;
+  public Boolean getActive() {
+    return active;
   }
 
-  public void setQuarter(String quarter) {
-    this.quarter = quarter;
+  public void setActive(Boolean active) {
+    this.active = active;
   }
 }

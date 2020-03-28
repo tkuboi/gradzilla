@@ -1,5 +1,6 @@
 <div *ngIf="assignment">
     <h4>{{ assignment.course }} {{ assignment.name }}</h4>
+    <p *ngIf="assignment.grade">The current score: {{ assignment.grade }}</p>
 
 <mat-tab-group>
     <mat-tab label="submit">

@@ -1,5 +1,5 @@
 import { environment } from '@/../environments';
 export const config = {
-  apiUrl: environment.production ? 'http://csc365.toshikuboi.net:8080' : 'http://localhost:8080'
+  apiUrl: environment.production ? 'https://cpe202.toshikuboi.net:8080' : 'http://localhost:8080'
 };
 

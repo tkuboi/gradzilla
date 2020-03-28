@@ -16,7 +16,6 @@ import java.util.List;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class GraderController {
   private final GraderRepository graderRepository;
   private final AssignmentRepository assignmentRepository;
@@ -74,8 +73,7 @@ public class GraderController {
                                       @RequestParam("program") String program,
                                       @RequestParam("args")String args,
                                       @RequestParam("copy") Integer copy,
-                                      @RequestParam("pylint") Integer pylint,
-                                      @RequestParam("type") String type) {
+                                      @RequestParam("pylint") Integer pylint) {
     Path targetPath = null;
     RestResponseDto result = new RestResponseDto();
     try {
@@ -87,7 +85,7 @@ public class GraderController {
       if (!Files.exists(targetPath)) Files.createDirectories(targetPath);
       targetPath = Paths.get(dir + "/" + filename);
       Files.copy(file.getInputStream(), targetPath, REPLACE_EXISTING);
-      Grader grader = new Grader(assignmentId,seq,targetPath.toString(),program,args, copy, type);
+      Grader grader = new Grader(assignmentId,seq,targetPath.toString(),program,args, copy, "TEST");
       graderRepository.save(grader);
       if (pylint != null && pylint.equals(1)) {
         Grader grader1 = addPylint(course, assignmentId);
@@ -107,8 +105,8 @@ public class GraderController {
   }
 
   private Grader addPylint(String course, int assignmentId) {
-    Grader lint = this.graderRepository.findTopByCourseAndType(course, Grader.Type.LINT.name());
-    if (lint == null) {
+    List<Grader> lints = this.graderRepository.findAllByCourseAndType(course, Grader.Type.LINT.name());
+    if (lints == null || lints.size() == 0) {
       throw new RuntimeException("The lint has not been registered for this course yet.");
     }
     List<Grader> graders = this.graderRepository.findAllByAssignmentOrderBySeqDesc(assignmentId);
@@ -116,6 +114,7 @@ public class GraderController {
     if (graders != null && graders.size() > 0) {
       seq = graders.get(0).getSeq() + 1;
     }
+    Grader lint = lints.get(0);
     return new Grader(
       assignmentId, seq, lint.getFilePath(), lint.getProgram(),
       lint.getArgs(), lint.getCopy(), lint.getType());
