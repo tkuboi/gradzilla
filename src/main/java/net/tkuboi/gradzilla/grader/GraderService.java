@@ -23,7 +23,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 public class GraderService {
-  private static final long timeout = 60000;
+  private static final long timeout = 180000;
   private final SubmissionRepository submissionRepository;
   private final GradeRepository gradeRepository;
   private final GraderRepository graderRepository;
@@ -69,12 +69,20 @@ public class GraderService {
           Path target = Paths.get(subDir + "/" + filename);
           Files.copy(Paths.get(grader.getFilePath()), target, REPLACE_EXISTING);
           rootDir = targetPath.getParent();
-          cmd = new String[] {grader.getProgram(), target.toString()};
+          if (grader.getArgs() != null && grader.getArgs().length() > 0) {
+            cmd = new String[]{grader.getProgram(), target.toString(), grader.getArgs()};
+          } else {
+            cmd = new String[]{grader.getProgram(), target.toString()};
+          }
           proc = Runtime.getRuntime()
             .exec(cmd, null, rootDir.toFile());
         } else {
           rootDir = testFile.getParent();
-          cmd = new String[] {grader.getProgram(), testFile.toString(), targetPath.getParent().toString()};
+          if (grader.getArgs() != null && grader.getArgs().length() > 0) {
+            cmd = new String[]{grader.getProgram(), testFile.toString(), targetPath.getParent().toString(), grader.getArgs()};
+          } else {
+            cmd = new String[]{grader.getProgram(), testFile.toString(), targetPath.getParent().toString()};
+          }
           proc = Runtime.getRuntime()
             .exec(cmd, null, rootDir.toFile());
         }
