@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '@/services';
+import { AlertService, AuthenticationService } from '@/services';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,8 @@ export class AppComponent implements OnInit {
   isAuthenticated: boolean;
 
   constructor(public authenticationService: AuthenticationService,
-              public router: Router){}
+              public router: Router,
+              protected alertService: AlertService){}
 
   ngOnInit() {
     this.isAuthenticated = (this.authenticationService.currentUserValue != null);
