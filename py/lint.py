@@ -50,6 +50,8 @@ def run_lint(files):
     """
     outputs = []
     for fname in files:
+        if "test" in fname:
+            continue
         outputs.append(run(fname))
     return outputs
 
